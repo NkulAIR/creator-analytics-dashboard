@@ -32,15 +32,6 @@ docker-compose up -d        # starts local Postgres
 pip install -r requirements.txt
 ```
 
-## Build order
-
-1. Extract one source end-to-end (YouTube) into local files
-2. Load raw data into Postgres, untransformed
-3. Add a second source (Shopify), start reconciling schemas
-4. Build the transform layer (staging → marts)
-5. Wire up a basic dashboard reading from the marts
-6. Add orchestration (Airflow/Dagster) once the manual pipeline works
-7. Add Patreon, incremental loading, monitoring
 
 ## Project layout
 
@@ -56,3 +47,6 @@ src/
 tests/
 docs/
 ```
+## Verification Code
+
+WTC-7DQEH5VQ
