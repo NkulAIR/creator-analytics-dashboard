@@ -12,8 +12,9 @@ Docs: https://developers.google.com/youtube/v3
 """
 from datetime import datetime
 import os
-
-from .base import BaseExtractor, ExtractResult
+import helpers
+from base import BaseExtractor, ExtractResult
+# from .base import BaseExtractor, ExtractResult
 
 
 class YouTubeExtractor(BaseExtractor):
@@ -21,8 +22,10 @@ class YouTubeExtractor(BaseExtractor):
 
     def __init__(self, channel_id: str | None = None):
         self.channel_id = channel_id or os.environ["YOUTUBE_CHANNEL_ID"]
-        # TODO: build the authenticated client here, e.g.
-        # self.client = googleapiclient.discovery.build("youtube", "v3", credentials=...)
+
+        # Authenticated client
+        self.client = googleapiclient.discovery.build("youtube", "v3", credentials=Credentials.get_credentials())
+
 
     def extract(self, since: datetime | None = None) -> ExtractResult:
         """
@@ -32,6 +35,8 @@ class YouTubeExtractor(BaseExtractor):
         3. If `since` is set, filter to videos published/updated after it
         4. Return raw API records as-is -- don't transform here
         """
+
+
         raise NotImplementedError("Implement YouTube API calls here")
 
 
