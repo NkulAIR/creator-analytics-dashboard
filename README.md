@@ -32,7 +32,6 @@ docker-compose up -d        # starts local Postgres
 pip install -r requirements.txt
 ```
 
-
 ## Project layout
 
 ```
@@ -47,6 +46,3 @@ src/
 tests/
 docs/
 ```
-## Verification Code
-
-WTC-7DQEH5VQ
