@@ -12,10 +12,13 @@ Docs: https://developers.google.com/youtube/v3
 """
 from datetime import datetime
 import os
-import helpers
-from base import BaseExtractor, ExtractResult
-# from .base import BaseExtractor, ExtractResult
 
+from dotenv import load_dotenv
+import googleapiclient.discovery
+from .base import BaseExtractor, ExtractResult
+load_dotenv()
+
+from .helpers.auth import get_google_credentials 
 
 class YouTubeExtractor(BaseExtractor):
     source_name = "youtube"
@@ -24,7 +27,9 @@ class YouTubeExtractor(BaseExtractor):
         self.channel_id = channel_id or os.environ["YOUTUBE_CHANNEL_ID"]
 
         # Authenticated client
-        self.client = googleapiclient.discovery.build("youtube", "v3", credentials=Credentials.get_credentials())
+        # self.client = googleapiclient.discovery.build("")
+    
+        self.client = googleapiclient.discovery.build("youtube", "v3", credentials=get_google_credentials())
 
 
     def extract(self, since: datetime | None = None) -> ExtractResult:
@@ -37,11 +42,16 @@ class YouTubeExtractor(BaseExtractor):
         """
 
 
+
         raise NotImplementedError("Implement YouTube API calls here")
 
+
+
+        
 
 if __name__ == "__main__":
     # Quick manual test: python -m src.extract.youtube
     extractor = YouTubeExtractor()
+    extractor.channel_id
     result = extractor.extract()
     print(f"Pulled {len(result.records)} records from {result.source}")
