@@ -33,24 +33,27 @@ class YouTubeExtractor(BaseExtractor):
 
 
     def extract(self, since: datetime | None = None) -> ExtractResult:
-        """
-        TODO:
-        1. List videos for self.channel_id (playlistItems or search.list)
-        2. For each video, pull statistics (views, likes, comments) via videos.list
-        3. If `since` is set, filter to videos published/updated after it
-        4. Return raw API records as-is -- don't transform here
-        """
+        #1. List videos for self.channel_id (playlistItems or search.list)
+        get_uploads_playlist_id()
+
+        # 2. For each video, pull statistics (views, likes, comments) via videos.list
+        # 3. If `since` is set, filter to videos published/updated after it
+        # 4. Return raw API records as-is -- don't transform here
 
 
 
         raise NotImplementedError("Implement YouTube API calls here")
 
 
+    # def get_uploads_playlist_id(self) -> str:
+    #     response = self.client.channels().list(
+    #         part="contentDetails",
+    #         id=self.channel_id
+    #     ).execute()
 
-        
+    #     return response["items"][0]
 
-if __name__ == "__main__":
-    # Quick manual test: python -m src.extract.youtube
+
     extractor = YouTubeExtractor()
     extractor.channel_id
     result = extractor.extract()
