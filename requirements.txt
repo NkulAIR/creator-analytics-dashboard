@@ -1,0 +1,24 @@
+# --- extraction ---
+requests==2.32.3
+google-api-python-client==2.140.0
+google-auth-oauthlib==1.2.1
+ShopifyAPI==12.6.0
+
+# --- storage / db ---
+psycopg2-binary==2.9.9
+sqlalchemy==2.0.32
+
+# --- transform ---
+dbt-postgres==1.8.2
+
+# --- dashboard ---
+streamlit==1.38.0
+pandas==2.2.2
+plotly==5.23.0
+
+# --- orchestration ---
+apache-airflow==2.9.3
+
+# --- dev / test ---
+pytest==8.3.2
+python-dotenv==1.0.1
