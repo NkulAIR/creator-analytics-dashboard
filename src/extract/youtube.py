@@ -45,13 +45,13 @@ class YouTubeExtractor(BaseExtractor):
         raise NotImplementedError("Implement YouTube API calls here")
 
 
-    # def get_uploads_playlist_id(self) -> str:
-    #     response = self.client.channels().list(
-    #         part="contentDetails",
-    #         id=self.channel_id
-    #     ).execute()
+    def get_uploads_playlist_id(self) -> str:
+        response = self.client.channels().list(
+            part="contentDetails",
+            id=self.channel_id
+        ).execute()
 
-    #     return response["items"][0]
+        return response["items"][0]
 
 
     extractor = YouTubeExtractor()
