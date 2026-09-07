@@ -18,10 +18,14 @@ def test_extract_result_holds_records():
     assert len(result.records) == 1
 
 
-# TODO once YouTubeExtractor is implemented:
-# def test_youtube_extract_returns_expected_shape(mock_youtube_api):
-#     ...
 
-# TODO once ShopifyExtractor is implemented:
+def test_youtube_extract_returns_expected_shape(mock_youtube_api):
+    result = ExtractResult(source="youtube",
+                        extracted_at=datetime.now(timezone.utc),
+                        records=[{'greeting': 'hello'}])
+
+    assert type(result.records) == list(dict)
+    
+    
 # def test_shopify_extract_paginates_correctly(mock_shopify_api):
 #     ...
