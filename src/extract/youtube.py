@@ -38,16 +38,9 @@ class YouTubeExtractor(BaseExtractor):
         #1. List videos for self.channel_id (playlistItems or search.list)
         
         playlist_id = self._get_uploads_playlist_id()
-        video_ids = self._get_all_video_ids(playlist_id)
-        # print(video_ids) 
-
+        video_ids = self._get_all_video_ids(playlist_id, since=since)
         # 2. For each video, pull statistics (views, likes, comments) via videos.list
         video_stats = self._get_video_stats(video_ids=video_ids)
-
-        for stat in video_stats:
-            if stat == 'statistics':
-                print(stat['viewCount'])
-
 
         extraction_time = datetime.now(timezone.utc)
 
@@ -83,14 +76,20 @@ class YouTubeExtractor(BaseExtractor):
 
         while True:
             response = self.client.playlistItems().list(
-                part="contentDetails",
+                part="snippet,contentDetails",
                 playlistId=playlist_id,
                 maxResults=50,
                 pageToken=next_page_token
             ).execute()
 
             for item in response["items"]:
-                video_ids.append(item["contentDetails"]["videoId"])
+                published_at = datetime.fromisoformat(
+                    item["snippet"]["publishedAt"].replace("Z", "+00:00")
+                )
+
+
+                if since is None or published_at >= since:
+                    video_ids.append(item["contentDetails"]["videoId"])
 
             next_page_token = response.get("nextPageToken")
             if not next_page_token:
@@ -112,7 +111,7 @@ class YouTubeExtractor(BaseExtractor):
         return all_stats
 
 
-extractor = YouTubeExtractor()
-extractor.channel_id
-result = extractor.extract()
-print(f"Pulled {len(result.records)} records from {result.source}")
+if __name__ == "__main__":
+    extractor = YouTubeExtractor()
+    result = extractor.extract()
+    print(f"Pulled {len(result.records)} records from {result.source}")
