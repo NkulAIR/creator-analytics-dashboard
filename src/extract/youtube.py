@@ -70,7 +70,7 @@ class YouTubeExtractor(BaseExtractor):
 
 
 
-    def _get_all_video_ids(self, playlist_id: str) -> list[str]:
+    def _get_all_video_ids(self, playlist_id: str, since: datetime) -> list[str]:
         video_ids = []
         next_page_token = None
 
