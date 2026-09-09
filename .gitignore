@@ -21,3 +21,4 @@ build/
 *.pyc
 *.pkl
 *.pickle
+env/
