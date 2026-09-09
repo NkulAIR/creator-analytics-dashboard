@@ -1,7 +1,7 @@
 """
 YouTube Data API v3 extractor.
 
-Start here first -- see README build order. Pulls channel-level stats
+Pulls channel-level stats
 and per-video engagement metrics (views, likes, comments).
 
 Auth: OAuth 2.0 (google-auth-oauthlib). You'll need a Google Cloud
