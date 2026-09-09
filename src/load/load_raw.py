@@ -1,9 +1,8 @@
 """
 Loads ExtractResult records into raw warehouse tables, untouched.
 
-Design : One raw table per source (raw_youtube,
-raw_shopify, raw_patreon), each storing the full JSON payload plus
-minimal metadata. All reconciliation happens later in src/models/.
+Design : One raw table per source (raw_youtube, raw_shopify, raw_patreon), each storing the full JSON payload plus minimal metadata.
+All reconciliation happens later in src/models/.
 This way a schema change upstream never breaks the load step
 only the transform step would updating.
 """
