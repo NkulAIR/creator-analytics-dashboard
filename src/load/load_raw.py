@@ -13,6 +13,8 @@ from src.extract.base import ExtractResult
 from sqlalchemy import create_engine, text
 
 
+
+
 DATABASE_URL = os.environ.get(
     "DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/creator_analytics"
 )
@@ -57,5 +59,6 @@ if __name__ == "__main__":
     dummy = ExtractResult(
         source="youtube", extracted_at=datetime.now(timezone.utc), records=[{"video_id": "abc123"}]
     )
+    
     n = load_raw(dummy)
     print(f"Loaded {n} rows into raw_{dummy.source}")
