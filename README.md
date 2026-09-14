@@ -2,8 +2,8 @@ Verification Code : WTC-7DQEH5VQ
 
 # Creator Analytics Unification Dashboard
 
-A data engineering project that unifies a content creator's siloed data —
-YouTube, Shopify, and Patreon — into a single warehouse and dashboard, so
+A data engineering project that unifies a content creator's siloed data from
+YouTube, Twitch, Shopify and Patreon into a single warehouse and dashboard, so
 overall business growth can be analyzed in one place instead of across
 three disconnected platforms.
 
@@ -24,7 +24,6 @@ Extract → Load → Transform → Serve, coordinated by an orchestrator.
   (`revenue_event`, `engagement_event`) via dbt or plain SQL
 - **Serve**: a dashboard (Streamlit) queries the unified model
 
-See `docs/architecture.md` and `docs/erd.md` for diagrams.
 
 ## Getting started
 
