@@ -35,3 +35,15 @@ def get_app_access_token() -> str:
     return response.json()["access_token"]
 
 # 2. Get broadcaster ID. Twitch users ID as user identifier not username
+def get_broadcaster_id(login: str, token: str) -> str:
+    headers = {
+        "Client-ID": TWITCH_CLIENT_ID,
+        "Authorization": f"Bearer {token}",
+    }
+    response = requests.get(
+        "https://api.twitch.tv/helix/users",
+        headers=headers,
+        params={"login": login},
+    )
+    response.raise_for_status()
+    return response.json()["data"][0]["id"]
