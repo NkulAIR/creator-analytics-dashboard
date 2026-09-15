@@ -33,7 +33,7 @@ class TwitchExtractor(BaseExtractor):
         self.client_secret = os.environ["TWITCH_CLIENT_SECRET"]
         self.broadcaster_login = broadcaster_login or os.environ["TWITCH_BROADCASTER_LOGIN"]
 
-        self.access_token = self._get_app_access_token()
+        self.access_token = self.get_app_access_token()
         self.headers = {
             "Client-ID": self.client_id,
             "Authorization": f"Bearer {self.access_token}",
@@ -42,7 +42,7 @@ class TwitchExtractor(BaseExtractor):
 
 # 1. Step 1: Authenticate client by creating HTTP requests structured this way:
 
-    def get_app_access_token() -> str:
+    def get_app_access_token(self) -> str:
         response = requests.post(
             "https://id.twitch.tv/oauth2/token",
             data={
@@ -73,7 +73,7 @@ class TwitchExtractor(BaseExtractor):
 
 
     # 3. Get all videos using the broadcaster ID
-    def _get_all_videos(self, broadcaster_id: str, since: datetime | None = None) -> list[dict]:
+    def get_all_videos(self, broadcaster_id: str, since: datetime | None = None) -> list[dict]:
         videos = []
         cursor = None
 
@@ -106,8 +106,8 @@ class TwitchExtractor(BaseExtractor):
 
 
     def extract(self, since: datetime | None = None) -> ExtractResult:
-        broadcaster_id = self._get_broadcaster_id()
-        videos = self._get_all_videos(broadcaster_id, since=since)
+        broadcaster_id = self.get_broadcaster_id()
+        videos = self.get_all_videos(broadcaster_id, since=since)
 
         return ExtractResult(
             source=self.source_name,
