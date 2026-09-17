@@ -44,3 +44,48 @@ class PatreonExtractor(BaseExtractor):
             raise ValueError("No Patreon campaign found for this account.")
 
         return data[0]["id"]
+
+    def _get_all_members(self, campaign_id: str) -> list[dict]:
+        members = []
+        url = f"{BASE_URL}/campaigns/{campaign_id}/members"
+        params = {
+            "fields[member]": "currently_entitled_amount_cents,last_charge_date,patron_status,full_name",
+            "page[count]": 100,
+        }
+
+        while url:
+            response = requests.get(url, headers=self.headers, params=params)
+            response.raise_for_status()
+            data = response.json()
+
+            members.extend(data["data"])
+
+            url = data.get("links", {}).get("next")
+            params = None
+
+        return members
+
+    def extract(self, since: datetime | None = None) -> ExtractResult:
+        campaign_id = self._get_campaign_id()
+        members = self._get_all_members(campaign_id)
+
+        if since is not None:
+            members = [
+                m for m in members
+                if m["attributes"].get("last_charge_date")
+                and datetime.fromisoformat(
+                    m["attributes"]["last_charge_date"].replace("Z", "+00:00")
+                ) >= since
+            ]
+
+        return ExtractResult(
+            source=self.source_name,
+            extracted_at=datetime.now(timezone.utc),
+            records=members,
+        )
+
+if __name__ == "__main__":
+    # Quick manual test: python -m src.extract.patreon
+    extractor = PatreonExtractor()
+    result = extractor.extract()
+    print(f"Pulled {len(result.records)} records from {result.source}")
