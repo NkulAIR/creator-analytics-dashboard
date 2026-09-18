@@ -10,6 +10,8 @@ from sqlalchemy import create_engine, text
 
 from src.extract.youtube import YouTubeExtractor
 from src.extract.twitch import TwitchExtractor
+from src.extract.patreon import PatreonExtractor
+
 
 DATABASE_URL = os.environ.get(
     "DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/creator_analytics"
@@ -41,6 +43,16 @@ def seed_platform_account(engine, platform_name: str, category: str,
 if __name__ == "__main__":
     engine = create_engine(DATABASE_URL)
 
+    youtube = YouTubeExtractor()
+    seed_platform_account(
+        engine,
+        platform_name="youtube",
+        category="content",
+        external_account_id=youtube.channel_id,
+        display_name="Nkul-AIR",
+    )
+    print("Seeded youtube platform account")
+    
     twitch = TwitchExtractor()
     seed_platform_account(
         engine,
@@ -50,3 +62,13 @@ if __name__ == "__main__":
         display_name=twitch.broadcaster_login,
     )
     print("Seeded twitch platform account")
+
+    patreon = PatreonExtractor()
+    seed_platform_account(
+        engine,
+        platform_name="patreon",
+        category="revenue",
+        external_account_id=patreon._get_campaign_id(),
+        display_name="my patreon campaign",
+    )
+    print("Seeded patreon platform account")

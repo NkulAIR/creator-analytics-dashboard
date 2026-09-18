@@ -12,6 +12,10 @@ from urllib.parse import urlencode
 
 import requests
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TOKEN_PATH = os.path.join(BASE_DIR, "patreon_token.pickle")
 
