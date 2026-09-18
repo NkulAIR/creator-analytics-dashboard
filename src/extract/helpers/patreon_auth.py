@@ -17,7 +17,7 @@ TOKEN_PATH = os.path.join(BASE_DIR, "patreon_token.pickle")
 
 PATREON_CLIENT_ID = os.environ["PATREON_CLIENT_ID"]
 PATREON_CLIENT_SECRET = os.environ["PATREON_CLIENT_SECRET"]
-REDIRECT_URI = "http://localhost:8000/callback"
+REDIRECT_URI = "http://localhost:3000"
 SCOPES = "identity campaigns campaigns.members"
 
 AUTH_URL = "https://www.patreon.com/oauth2/authorize"
