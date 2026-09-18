@@ -31,9 +31,28 @@ def get_platform_account_id(conn, platform_name: str) -> str:
     ).fetchone()
 
     if not result:
-        raise ValueError(f"No platform_account found for platform '{platform_name}' — seed it first.")
+        raise ValueError(f"No platform_account found for platform '{platform_name}'")
 
     return result.id
+
+
+def insert_revenue_event(conn, platform_account_id: str, external_transaction_id: str,
+                          amount: float, occurred_at: datetime) -> None:
+    conn.execute(
+        text("""
+            INSERT INTO revenue_events
+                (platform_account_id, external_transaction_id, amount, currency, occurred_at, event_type)
+            VALUES
+                (:platform_account_id, :external_transaction_id, :amount, 'USD', :occurred_at, 'pledge')
+            ON CONFLICT (platform_account_id, external_transaction_id) DO NOTHING
+        """),
+        {
+            "platform_account_id": platform_account_id,
+            "external_transaction_id": external_transaction_id,
+            "amount": amount,
+            "occurred_at": occurred_at,
+        }
+    )
 
 
 
