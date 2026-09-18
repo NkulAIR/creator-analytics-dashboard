@@ -53,7 +53,6 @@ def load_raw(result: ExtractResult, engine=None) -> int:
 
 if __name__ == "__main__":
     # python -m src.load.load_raw to run script
-    # python -m src.load.load_raw to run script
     from datetime import datetime, timezone
     from src.extract.base import ExtractResult
 
