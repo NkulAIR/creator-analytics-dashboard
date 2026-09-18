@@ -55,7 +55,42 @@ def insert_revenue_event(conn, platform_account_id: str, external_transaction_id
     )
 
 
+def transform_patreon(engine=None) -> int:
+    engine = engine or create_engine(DATABASE_URL)
+    count = 0
 
+    with engine.begin() as conn:
+        platform_account_id = get_platform_account_id(conn, "patreon")
+
+        raw_rows = conn.execute(
+            text("SELECT extracted_at, payload FROM raw_patreon")
+        ).fetchall()
+
+        for row in raw_rows:
+            member = row.payload
+            attrs = member["attributes"]
+
+            last_charge_date = attrs.get("last_charge_date")
+            amount_cents = attrs.get("currently_entitled_amount_cents")
+
+            # Skip patrons with no charge history or zero pledge since
+            # theres nothing meaningful to record as revenue.
+            if not last_charge_date or not amount_cents:
+                continue
+
+            external_transaction_id = f"{member['id']}:{last_charge_date}"
+            occurred_at = datetime.fromisoformat(last_charge_date.replace("Z", "+00:00"))
+
+            insert_revenue_event(
+                conn,
+                platform_account_id=platform_account_id,
+                external_transaction_id=external_transaction_id,
+                amount=amount_cents / 100,
+                occurred_at=occurred_at,
+            )
+            count += 1
+
+    return count
 
 
 if __name__ == "__main__":
