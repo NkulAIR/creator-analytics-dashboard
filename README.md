@@ -1,4 +1,5 @@
 Verification Code : WTC-7DQEH5VQ
+Youtube video link: https://youtu.be/BU_csaYUBD0
 
 # Creator Analytics Unification Dashboard
 
