@@ -16,6 +16,7 @@ to answer questions like "does posting more videos actually grow revenue?"
 
 ## Architecture
 
+### Pipeline
 Extract → Load → Transform → Serve, coordinated by an orchestrator.
 
 - **Extract**: pull raw data from each platform's API (incremental where
